@@ -7,16 +7,20 @@
     <script>
         function loadXMLDoc() {
             var xhr = new XMLHttpRequest();
-            xhr.open("GET", "data.xml", true);
+            xhr.open("GET", "output.xml", true);
             xhr.onreadystatechange = function () {
-                if (xhr.readyState == 4 && xhr.status == 200) {
-                    var xmlDoc = xhr.responseXML;
-                    var x = xmlDoc.getElementsByTagName("channel");
-                    var display = "<h2>XML TV Data</h2>";
-                    for (var i = 0; i < x.length; i++) {
-                        display += "<p>Channel: " + x[i].getElementsByTagName("display-name")[0].childNodes[0].nodeValue + "</p>";
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        var xmlDoc = xhr.responseXML;
+                        var x = xmlDoc.getElementsByTagName("channel");
+                        var display = "<h2>XML TV Data</h2>";
+                        for (var i = 0; i < x.length; i++) {
+                            display += "<p>Channel: " + x[i].getElementsByTagName("display-name")[0].childNodes[0].nodeValue + "</p>";
+                        }
+                        document.getElementById("xmlContent").innerHTML = display;
+                    } else {
+                        document.getElementById("xmlContent").innerHTML = "Error loading XML TV Data: " + xhr.statusText;
                     }
-                    document.getElementById("xmlContent").innerHTML = display;
                 }
             };
             xhr.send();
