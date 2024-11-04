@@ -4,8 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My GitHub Pages Site</title>
+    <script>
+        function loadXMLDoc() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "data.xml", true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var xmlDoc = xhr.responseXML;
+                    var x = xmlDoc.getElementsByTagName("channel");
+                    var display = "<h2>XML TV Data</h2>";
+                    for (var i = 0; i < x.length; i++) {
+                        display += "<p>Channel: " + x[i].getElementsByTagName("display-name")[0].childNodes[0].nodeValue + "</p>";
+                    }
+                    document.getElementById("xmlContent").innerHTML = display;
+                }
+            };
+            xhr.send();
+        }
+        window.onload = loadXMLDoc;
+    </script>
 </head>
 <body>
     <h1>Welcome to My GitHub Pages Site</h1>
+    <div id="xmlContent">Loading XML TV Data...</div>
 </body>
 </html>
